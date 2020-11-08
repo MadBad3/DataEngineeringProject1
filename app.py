@@ -4,52 +4,32 @@ import json
 
 app = Flask(__name__)
 
-def add_user(uid, fname, lname):
-	user = {'first_name': fname,
-			'last_name': lname,
-			'credit': 0
+def add_sentence(sentID, the_sentence):
+	sentence = {'sentence_id': sentID,
+			'sentence': the_sentence
 			}
 	status = "success"
 	try:
-		redis_client.set(uid, json.dumps(user))
+		redis_client.set(sentID, json.dumps(sentence))
 	except RedisError:
 		status = "fail"
 	
 	return status
 	
 	
-def add_credit(uid, credit):
-	user = ''
-	status = "success"
-	try:
-		user = redis_client.get(uid)
-	except RedisError:
-		status = "fail"
-	if status is not 'fail' and user is not '':
-		user = json.loads(user)
-		user['credit'] = float(user['credit']) + float(credit)
-		try:
-			redis_client.set(uid, json.dumps(user))
-		except RedisError:
-			status = "fail"
-	else:
-		status = 'fail'
-	return status
-	
-def view_user(uid):
-	user = ''
+def view_sentence(sentID):
+	sentence = ''
 	status = ""
 	try:
-		user = redis_client.get(uid)
+		sentence = redis_client.get(sentID)
 	except RedisError:
 		status = "fail"
 		
-	if status is not 'fail' and user is not '':
-		user = json.loads(user)
-		status = "first name: {}, last name: {}, credit: {}".format(
-									user['first_name'],
-									user['last_name'],
-									user['credit']
+	if status is not 'fail' and sentence is not '':
+		sentence = json.loads(sentence)
+		status = "sentence ID: {}, the sentence: {}".format(
+								sentence['sentence_id'],
+								sentence['sentence'],
 								)
 	return status
 	
@@ -57,16 +37,18 @@ def view_user(uid):
 def index():
 	if request.method == 'POST':
 		details = request.form
-		if details['form_type'] == 'add_user':
-			return add_user(details['uid'], details['fname'], details['lname'])
+		if details['form_type'] == 'add_sentence':
+			return add_sentence(details['sentID'], details['the_sentence'])
 			
-		elif details['form_type'] == 'add_credit':
-			return add_credit(details['uid'], details['credit'])
-			
-		elif details['form_type'] == 'view_user':
-			return view_user(details['uid'])
+		elif details['form_type'] == 'view_sentence':
+			return view_sentence(details['sentID'])
 	return render_template('index.html')
 
 if __name__ == '__main__':
 	redis_client = StrictRedis(host='redis', port=6379)
 	app.run(host='0.0.0.0')
+	
+	
+	
+	
+	
