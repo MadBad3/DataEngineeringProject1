@@ -1,16 +1,15 @@
 <HTML>
 <body bgcolor="green">
 
-	<h1>Sentiment Analysis</h1>
 
-    <form action="{{ url_for('predict')}}"method="post">
-    	<input type="text" name="experience" placeholder="Sentence" required="required" />
-
-        <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
-    </form>
-
-   {{ prediction_text }}
-
+<form method="post">
+    <center>
+    <H1>Sentiment Analysis </H1> <br>
+    <input type = "text" name= "uid" /> <br>
+    <input type="hidden" name="form_type" value="view_sentence"/>
+    <input type = "submit"> <br>
+    </center>
+</form>
 
 
 </body>
