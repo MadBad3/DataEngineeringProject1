@@ -18,7 +18,7 @@ def predict():
     sentence = pd.Series(int_features)
     predicted = model.predict(sentence)
 
-    return render_template('index.html', prediction_text='The sentiment is: {}'.format(predicted))
+    return render_template('index.html', prediction_text='The sentiment of this sentence is: {}'.format(predicted))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
