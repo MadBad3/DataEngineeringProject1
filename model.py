@@ -12,9 +12,9 @@ df.head()
 
 df['sentiment'] = df['Score'].apply(lambda rating : +1 if rating > 3 else (-1 if rating < 3 else 0))
 
-positive = df[df['sentiment'] == 1]
-negative = df[df['sentiment'] == -1]
-neutral = df[df['sentiment'] == 0]
+positive = df[df['sentiment'] == 'positive']
+negative = df[df['sentiment'] == 'negative']
+neutral = df[df['sentiment'] == 'neutral']
 
 def remove_punctuation(text):
     final = "".join(u for u in text if u not in ("?", ".", ";", ":",  "!",'"'))
